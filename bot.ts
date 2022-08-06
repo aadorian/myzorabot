@@ -10,6 +10,7 @@ const BOT_IMAGE = `https://bafkreidtnyprjjb56pccv7w467w2iia7hzc2sufwnjsargn6vlsx
 
 const BOT_VERSION = "1.0.0";
 const EMBED_COLOR_C = 'FFFFFF';
+const EXAMPLE_ADDRESS = '0x8d04a8c79cEB0889Bdd12acdF3Fa9D207eD3Ff63'
 const EXAMPLE_COMMAND_BALANCE = `!balance 0xc729Ce9bF1030fbb639849a96fA8BBD013680B64`;
 const EXAMPLE_COMMAND_BALANCE2 = `!balance 0x8d04a8c79cEB0889Bdd12acdF3Fa9D207eD3Ff63`
 const EXAMPLE_COMMAND_BALANCE3 = `!balance 0x335eeef8e93a7a757d9e7912044d9cd264e2b2d8`
@@ -37,6 +38,16 @@ const client: Client = new Client();
 client.on("ready", () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
+/***
+ * @param message
+ * @param args
+ * @param command
+ * @param prefix
+ * @param commandName
+ * @param commandArgs
+ * @param commandArgsString
+ * @param commandArgsStringNoPrefix
+***/
 const onReceiveMessage = async (msg) => {
 	const authorId = msg.author.id;
 	const messageContent = msg.content;
@@ -44,10 +55,10 @@ const onReceiveMessage = async (msg) => {
 	const zdk = new ZDK(); //
 	let args = {
 		token: {
-			address: "0x8d04a8c79cEB0889Bdd12acdF3Fa9D207eD3Ff63",
+			address: EXAMPLE_ADDRESS,
 			tokenId: "314"
 		},
-		includeFullDetails: false // Optional, provides more data on the NFT such as all historical events
+		includeFullDetails: false 
 	}
 	let response = await zdk.token(args)
 	if (messageContent.startsWith("!minted")) {
@@ -117,7 +128,7 @@ const onReceiveMessage = async (msg) => {
 			.setThumbnail(response.token.token.image.url)
 			.addField("tokenName", response.token.token.name)
 			.addField("typeName", response.token.__typename, true)
-			.addField("collection Address", response.token.token.collectionAddress, true)
+			.addField("collection address", response.token.token.collectionAddress, true)
 			.addField("token owner", response.token.token.owner)
 			.addField("token last refresh time", response.token.token.lastRefreshTime)
 			.addField("token id", response.token.token.tokenId)
